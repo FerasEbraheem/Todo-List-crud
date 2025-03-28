@@ -28,4 +28,5 @@ switch ($_SERVER['REQUEST_METHOD']) {
         // Placeholder for deleting a TODO
         break;
 }
+
 ?>
