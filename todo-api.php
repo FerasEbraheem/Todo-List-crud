@@ -1,7 +1,12 @@
 <?php
 header('Content-Type: application/json');
 
-// LOG function in PHP
+/**
+ * Schreibt einen Log-Eintrag in die Datei log.txt.
+ *
+ * @param string $action Art der Aktion (GET, POST, DELETE)
+ * @param mixed  $data   Die zugehörigen Daten
+ */
 function write_log($action, $data) {
     $log = fopen('log.txt', 'a');
     $timestamp = date('Y-m-d H:i:s');
@@ -9,38 +14,50 @@ function write_log($action, $data) {
     fclose($log);
 }
 
-// Read content of the file and decode JSON data to an array.
+// Name der JSON-Datei, in der die Todos gespeichert werden
 $todo_file = 'todo.json';
+
+// Inhalte der Datei einlesen und in ein Array umwandeln
 if (file_exists($todo_file)) {
-    $todo_items = json_decode(
-        file_get_contents($todo_file),
-        true);
+    $todo_items = json_decode(file_get_contents($todo_file), true);
 } else {
-    $todos_items = [];
+    // Falls die Datei nicht existiert, wird ein leeres Array erstellt
+    $todo_items = [];
 }
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
+        // Rückgabe der Todo-Liste als JSON
         echo json_encode($todo_items);
         write_log("GET", $todo_items);
         break;
     case 'POST':
-        // Get data from the input stream.
+        // Daten aus dem Request-Body auslesen
         $data = json_decode(file_get_contents('php://input'), true);
-        // Create new todo item.
+        // Neues Todo mit einer eindeutigen ID erstellen
         $new_todo = ["id" => uniqid(), "title" => $data['title']];
-        // Add new item to our todo item list.
+        // Neues Todo der Liste hinzufügen
         $todo_items[] = $new_todo;
-        // Write todo items to JSON file.
+        // Die aktualisierte Liste in die JSON-Datei schreiben
         file_put_contents($todo_file, json_encode($todo_items));
-        // Return the new item.
+        // Das neue Todo an den Client zurückgeben
         echo json_encode($new_todo);
         break;
     case 'PUT':
-        // Placeholder for updating a TODO
+        // Hier kann der Code zur Aktualisierung eines Todos eingefügt werden
         break;
     case 'DELETE':
-        // Placeholder for deleting a TODO
+        // Daten aus dem Request-Body auslesen
+        $data = json_decode(file_get_contents('php://input'), true);
+        // Todo-Liste filtern und das Todo mit der angegebenen ID entfernen
+        $todo_items = array_values(array_filter($todo_items, function($todo) use ($data) {
+            return $todo['id'] !== $data['id'];
+        }));
+        // Die aktualisierte Liste in die JSON-Datei schreiben
+        file_put_contents($todo_file, json_encode($todo_items));
+        // Rückgabe eines Erfolgsstatus an den Client
+        echo json_encode(['status' => 'success']);
+        write_log("DELETE", $data);
         break;
 }
 ?>
