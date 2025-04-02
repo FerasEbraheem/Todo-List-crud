@@ -1,17 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // URL zur API
-    const apiUrl = "todo-api.php";
 
-    /**
-     * Erzeugt einen "Löschen"-Button für ein Todo.
-     * @param {Object} item - Das Todo-Objekt
-     * @returns {HTMLElement} - Der erstellte Button
-     */
+    // Define the URL to our CRUD server api
+    const apiUrl = 'todo-api.php';
+
+
     const getDeleteButton = (item) => {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Löschen';
 
-        // Klick-Event zum Löschen des Todo
+        // Handle delete button click
         deleteButton.addEventListener('click', function() {
             fetch(apiUrl, {
                 method: 'DELETE',
@@ -21,21 +18,61 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ id: item.id })
             })
             .then(response => response.json())
-            .then(() => fetchTodos()) // Todo-Liste neu laden
-            .catch(error => console.error('Löschfehler:', error));
+            .then(() => {
+                fetchTodos(); // Reload todo list
+            });
         });
 
         return deleteButton;
-    };
+    }
 
-    // Formular-Submit zum Hinzufügen eines neuen Todos
+    const getCompleteButton = (item) => {
+        const completeButton = document.createElement('button');
+        completeButton.textContent = 'Erledigt';
+
+        completeButton.addEventListener('click', function() {
+            fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: item.id, completed: true })
+            })
+            .then(response => response.json())
+            .then(updatedItem => {
+                fetchTodos();
+            });
+        });
+
+        return completeButton;
+    }
+
+    const fetchTodos = () => {
+        fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = "";
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.title;
+                li.appendChild(getDeleteButton(item));
+                li.appendChild(getCompleteButton(item));
+                if (item.completed) {
+                    li.style.textDecoration = 'line-through';
+                }
+                todoList.appendChild(li);
+            });
+        });
+    }
+
     document.getElementById('todo-form').addEventListener('submit', function(e) {
         e.preventDefault();
+
         const inputElement = document.getElementById('todo-input');
-        const todoInput = inputElement.value.trim();
-        // Verhindert das Hinzufügen leerer Einträge
-        if (!todoInput) return;
+        const todoInput = inputElement.value;
         inputElement.value = "";
+
 
         fetch(apiUrl, {
             method: 'POST',
@@ -46,36 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            // Hinzufügen des neuen Todos zur Liste ohne die gesamte Liste neu zu laden
-            const todoList = document.getElementById('todo-list');
-            const li = document.createElement('li');
-            li.textContent = data.title;
-            li.appendChild(getDeleteButton(data));
-            todoList.appendChild(li);
-        })
-        .catch(error => console.error('Fehler beim Hinzufügen:', error));
+            fetchTodos(); // Reload todo list
+        });
     });
 
-    /**
-     * Lädt alle Todos von der API und zeigt sie an.
-     */
-    const fetchTodos = () => {
-        fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const todoList = document.getElementById('todo-list');
-            // Vor dem Neuladen wird die Liste geleert, um Dopplungen zu vermeiden
-            todoList.innerHTML = "";
-            data.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item.title;
-                li.appendChild(getDeleteButton(item));
-                todoList.appendChild(li);
-            });
-        })
-        .catch(error => console.error('Fehler beim Laden der Todos:', error));
-    };
 
-    // Initiales Laden der Todos beim Seitenstart
     fetchTodos();
 });
