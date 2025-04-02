@@ -1,0 +1,128 @@
+/* Reset und globale Einstellungen für alle Elemente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Körper-Stil: Schrift, Hintergrund, Zentrierung */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    display: flex;
+    flex-direction: column; /* Anordnung der Elemente von oben nach unten */
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Hauptcontainer: Weißer Hintergrund, abgerundete Ecken, Schatten */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* Überschrift-Stil (bleibt immer oben) */
+h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #444;
+}
+
+/* Formular-Stile: Input und Button in einer Zeile */
+form {
+    display: flex;
+    flex-direction: column; /* Stapelt Eingabe und Button untereinander */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Eingabefeld-Stil */
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Button-Stil */
+button {
+    padding: 12px;
+    border: none;
+    background: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Container für die Liste */
+.todo-list-container {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+/* Todo-Liste */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+/* Todo-Eintrag */
+li {
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Durchgestrichener Stil für erledigte Aufgaben */
+.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+/* Buttons in der Liste */
+li button {
+    width: auto;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+/* Update-Formular */
+#todo-update-form {
+    margin-bottom: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#todo-update-form input[type="text"] {
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container, .todo-list-container {
+        width: 100%;
+        padding: 20px;
+    }
+}
