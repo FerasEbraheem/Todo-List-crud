@@ -1,10 +1,11 @@
 <?php
+
 header('Content-Type: application/json');
 
 $host = '127.0.0.1';
 $db = 'todo_list';
-$user = 'j23d';
-$pass = 'beep';
+$user = 'ferasebraheem';
+$pass = '123456789feras';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
