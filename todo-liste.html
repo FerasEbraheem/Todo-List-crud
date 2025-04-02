@@ -2,27 +2,21 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport-Einstellungen für responsives Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO Liste</title>
-    <!-- Einbinden des CSS-Stils -->
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Hauptcontainer zur Zentrierung des Inhalts -->
-    <div class="container">
-        <h1>TODO Liste</h1>
+    <h1>TODO Liste</h1>
 
-        <!-- Formular zum Hinzufügen eines neuen Todos -->
-        <form id="todo-form">
-            <input type="text" id="todo-input" placeholder="Neuer Eintrag">
-            <button type="submit">Hinzufügen</button>
-        </form>
-        <!-- Ungeordnete Liste für die Todo-Einträge -->
-        <ul id="todo-list"></ul>
-    </div>
-    
-    <!-- Einbinden des JavaScript-Codes -->
+    <form id="todo-form">
+        <input type="text" id="todo-input" placeholder="Neue Aufgabe hinzufügen">
+        <button type="submit">Hinzufügen</button>
+    </form>
+
+    <ul id="todo-list">
+        <!-- TODO items will be inserted here dynamically -->
+    </ul>
+
     <script src="todo.js"></script>
 </body>
 </html>
