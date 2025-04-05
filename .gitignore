@@ -1,1 +1,8 @@
 log.txt
+
+#composer
+vendor/
+
+#phpdocumenter
+docs
+.phpdoc
